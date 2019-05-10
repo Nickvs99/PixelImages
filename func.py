@@ -85,7 +85,7 @@ def animate(path):
     return maxPower
 
 def average(pix, x1, x2, y1, y2):
-    """ Returns the average color from an area given by x1, x2, y1 and y2"""
+    """ Returns the average color from an area rectangular given by x1, x2, y1 and y2"""
     
     RGBValues = [0] * 3
 
@@ -160,12 +160,10 @@ def colorScale(path, colorIndex):
         for j in range(heigth):
             
             RGBValue = pix[i,j]
-            color = [255,255,255]
-            color[colorIndex] = 255 - RGBValue[colorIndex]
-            # tempValue = RGBValue[colorIndex]
-            # grey = int(1/2*(RGBValue[0] + RGBValue[1] + RGBValue[2] - tempValue))
-            # color = [grey, grey, grey]
-            # color[colorIndex] = tempValue
+
+            color = [0, 0, 0]
+            color[colorIndex] = RGBValue[colorIndex]
+
             pix[i,j] = tuple(color)
 
     # Gives the output the right name
@@ -176,7 +174,7 @@ def colorScale(path, colorIndex):
     else:
          string = "Blue"
 
-    image.save("Results\\%s\\%s5.jpg" %(path, string))
+    image.save("Results\\%s\\%s.jpg" %(path, string))
 
 def scan(path, value, **kwargs):
     """ White-ish pixels change to 255,255,255 and 
@@ -203,7 +201,7 @@ def scan(path, value, **kwargs):
 
     image.save("Results\\%s\\Scanned_%d.jpg" %(path, value))
 
-def grey(path, **kwargs):
+def greyImage(path, **kwargs):
     """Creates a grey Image"""
 
     image = Image.open('Images\\%s' %(path))
@@ -223,4 +221,4 @@ def grey(path, **kwargs):
             grey = int(grey)    
             pix[i,j] = tuple([grey, grey, grey])
 
-    image.save("Results\\%s\\grey2.jpg" %(path))
+    image.save("Results\\%s\\grey.jpg" %(path))
