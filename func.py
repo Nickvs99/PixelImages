@@ -28,7 +28,7 @@ def determineEdges(image, pixelsX, pixelsY):
         yCor = i * pixelHeigth
 
         imageYEdges.append(int(np.round(yCor)))
-
+    
     # Removes duplicates, necessary for rounding
     imageXEdges = removeDupes(imageXEdges)
     imageYEdges = removeDupes(imageYEdges)
@@ -53,7 +53,7 @@ def animate(path):
     original = Image.open('Images\\%s' %(path))
 
     size = original.size
-
+    print("Size: ", size)
     # Determines how many frames have to be made
     if size[0] > size[1]:
         maxPower = math.log(size[0], 2)
@@ -68,7 +68,8 @@ def animate(path):
 
     # Creates a frame
     while power >= 0:
-        image = pixelImage(path, 2 ** power, 2 ** power, animation = True, frame = power)
+        print("\nPower: ", power)
+        image = pixelImage(image, 2 ** power, 2 ** power, animation = True, frame = power)
         power -= 1
 
     # Grabs all images from the temp directory
@@ -84,20 +85,40 @@ def animate(path):
 
     return maxPower
 
-def average(pix, x1, x2, y1, y2):
+def averageArea(pix, x1, x2, y1, y2):
     """ Returns the average color from an area rectangular given by x1, x2, y1 and y2"""
-    
-    RGBValues = [0] * 3
 
+    RGBValues = [0] * 3
     for x in range(x1,x2):
         for y in range(y1,y2):
             for k in range(3):
-                        RGBValues[k] += pix[x,y][k]        
+
+                RGBValues[k] += pix[x,y][k]        
 
     area = (x2 -x1)*(y2-y1)
     RGBAvg = [0] * 3
     for i in range(3):
         RGBAvg[i] = RGBValues[i] / area
+
+    avgColor = (int(RGBAvg[0]), int(RGBAvg[1]), int(RGBAvg[2]))
+    
+    return avgColor
+
+def average(pix, pixels):
+    """ Returns the average color from the list of pixels"""
+
+    RGBValues = [0] * 3
+    for pixel in pixels:
+
+        x = pixel[0]
+        y = pixel[1]
+
+        for i in range(3):
+            RGBValues[i] += pix[x,y][i]        
+            
+    RGBAvg = [0] * 3
+    for i in range(3):
+        RGBAvg[i] = RGBValues[i] / len(pixels)
 
     avgColor = (int(RGBAvg[0]), int(RGBAvg[1]), int(RGBAvg[2]))
     
@@ -117,10 +138,10 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
     if 'animation' in kwargs:
         animation = kwargs['animation']
         frame = kwargs['frame']
+        im = path
     else:
         animation = False
-
-    im = Image.open('Images\\%s' %(path))
+        im = Image.open('Images\\%s' %(path))
 
     pix = im.load()
     edgesX, edgesY = determineEdges(im, pixelsX, pixelsY)
@@ -128,8 +149,16 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
     # Colors an area determined by the edges with the same color
     for i in range(len(edgesX) - 1):
         for j in range(len(edgesY) - 1):
-            avg = average(pix, edgesX[i], edgesX[i + 1], edgesY[j], edgesY[j + 1])
-            colorIn(pix, avg, edgesX[i], edgesX[i + 1], edgesY[j], edgesY[j + 1])
+            
+            pixels = []
+            pixels.append([edgesX[i]       , edgesY[j]      ])
+            pixels.append([edgesX[i + 1] - 1 , edgesY[j]       ])
+            pixels.append([edgesX[i]       , edgesY[j + 1] - 1   ])
+            pixels.append([edgesX[i + 1] - 1, edgesY[j + 1] - 1     ])
+
+            avg2 = average(pix, pixels)
+            
+            colorIn(pix, avg2, edgesX[i], edgesX[i + 1] , edgesY[j], edgesY[j + 1] )
 
 
     if animation:
