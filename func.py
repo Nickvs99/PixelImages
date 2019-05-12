@@ -50,10 +50,9 @@ def animate(path):
     """ Creates an animation of a image which becomes sharper every frame
         Each frame is created through PixelImage()"""
 
-    original = Image.open('Images\\%s' %(path))
+    image = Image.open('Images\\%s' %(path))
 
     size = original.size
-    print("Size: ", size)
     # Determines how many frames have to be made
     if size[0] > size[1]:
         maxPower = math.log(size[0], 2)
@@ -62,11 +61,10 @@ def animate(path):
 
     power = int(math.floor(maxPower))
 
-    # Pixelizes the images each step, the previous image gets passed on as a 
-    # variable for optimizing
-    image = original
 
-    # Creates a frame
+
+    # Creates a frame, pixelizes the images for each step, the previous image gets passed on as a 
+    # variable for optimizing
     while power >= 0:
         print("\nPower: ", power)
         image = pixelImage(image, 2 ** power, 2 ** power, animation = True, frame = power)
