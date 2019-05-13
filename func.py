@@ -52,7 +52,7 @@ def animate(path):
 
     image = Image.open('Images\\%s' %(path))
 
-    size = original.size
+    size = image.size
     # Determines how many frames have to be made
     if size[0] > size[1]:
         maxPower = math.log(size[0], 2)
@@ -142,6 +142,7 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
         im = Image.open('Images\\%s' %(path))
 
     pix = im.load()
+    dir(pix)
     edgesX, edgesY = determineEdges(im, pixelsX, pixelsY)
 
     # Colors an area determined by the edges with the same color
