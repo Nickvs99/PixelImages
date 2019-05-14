@@ -61,13 +61,21 @@ def animate(path):
 
     power = int(math.floor(maxPower))
 
-
+    if not os.path.exists('Results\\tempImages'):
+        os.makedirs('Results\\tempImages')
 
     # Creates a frame, pixelizes the images for each step, the previous image gets passed on as a 
     # variable for optimizing
     while power >= 0:
         print("\nPower: ", power)
         image = pixelImage(image, 2 ** power, 2 ** power, animation = True, frame = power)
+        
+        if power < 10:
+            string = "0%i" %(power)
+        else:
+            string = power
+        image.save('Results\\tempImages\\Pixel_%s.jpg' %(string))
+
         power -= 1
 
     # Grabs all images from the temp directory
@@ -159,16 +167,7 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
             colorIn(pix, avg2, edgesX[i], edgesX[i + 1] , edgesY[j], edgesY[j + 1] )
 
 
-    if animation:
-        if not os.path.exists('Results\\tempImages'):
-            os.makedirs('Results\\tempImages')
-        
-        if frame < 10:
-            string = "0%i" %(frame)
-        else:
-            string = frame
-        im.save('Results\\tempImages\\Pixel_%s.jpg' %(string))
-    else:
+    if not animation:
         im.save('Results\\%s\\Pixel_%sx%s.jpg' %(path, pixelsX, pixelsY))
     
     return im
@@ -249,3 +248,29 @@ def greyImage(path, **kwargs):
             pix[i,j] = tuple([grey, grey, grey])
 
     image.save("Results\\%s\\grey.jpg" %(path))
+
+def colorSteps(path, steps):
+    """ Creates a image where there are less colors possible. Instead of the 255 ^3 
+        possibilities, there are only (steps + 1) ^ 3 possible colors"""
+
+    image = Image.open('Images\\%s' %(path))
+
+    pix = image.load()
+
+    width = image.size[0]
+    heigth = image.size[1]
+
+    step = 255 / steps
+    for i in range(width):
+        for j in range(heigth):
+
+            RGBValue = pix[i,j]
+            color = [0] * 3
+
+            for k in range(3):
+
+                color[k] = int(round(RGBValue[k] / step) * step)
+
+            pix[i,j] = tuple(color)
+
+    image.save("Results\\%s\\colorSteps_%d.jpg" %(path, steps))
