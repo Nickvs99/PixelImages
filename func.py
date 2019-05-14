@@ -177,7 +177,7 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
 def colorScale(path, colorIndex):
     """Creates a images with just one color"""
 
-    image = Image.open('Images\\%s' %(path))
+    # image = Image.open('Images\\%s' %(path))
 
     pix = image.load()
 
