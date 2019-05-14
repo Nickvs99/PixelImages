@@ -70,7 +70,7 @@ def animate(path):
         print("\nPower: ", power)
         image = pixelImage(image, 2 ** power, 2 ** power, animation = True, frame = power)
         
-        if frame < 10:
+        if power < 10:
             string = "0%i" %(power)
         else:
             string = power
