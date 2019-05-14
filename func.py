@@ -249,3 +249,40 @@ def greyImage(path, **kwargs):
             pix[i,j] = tuple([grey, grey, grey])
 
     image.save("Results\\%s\\grey.jpg" %(path))
+
+def colorSteps(path, steps):
+
+    image = Image.open('Images\\%s' %(path))
+
+    pix = image.load()
+
+    width = image.size[0]
+    heigth = image.size[1]
+
+    step = 255 / steps
+    for i in range(width):
+        for j in range(heigth):
+
+            RGBValue = pix[i,j]
+            color = [0] * 3
+
+            for k in range(3):
+
+                color[k] = int(round(RGBValue[k] / step) * step)
+
+            # 255 / 10 -> 25.5
+
+            # 130 / 25.5 -> 5.09
+
+            # 5.09 -> 5
+
+            # 5 * 25.5 = newColor
+
+            # print(color)
+            # print(255 % steps)
+            pix[i,j] = tuple(color)
+
+    for i in range(width):
+        for j in range(heigth):
+            print(pix[i,j])
+    image.save("Results\\%s\\colorSteps_%d.jpg" %(path, steps))
