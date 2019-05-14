@@ -252,8 +252,8 @@ def greyImage(path, **kwargs):
 
 def colorSteps(path, steps):
     """ Creates a image where there are less colors possible. Instead of the 255 ^3 
-        possibilities, there are only (steps) ^ 3 possible colors"""
-        
+        possibilities, there are only (steps + 1) ^ 3 possible colors"""
+
     image = Image.open('Images\\%s' %(path))
 
     pix = image.load()
@@ -274,7 +274,4 @@ def colorSteps(path, steps):
 
             pix[i,j] = tuple(color)
 
-    for i in range(width):
-        for j in range(heigth):
-            print(pix[i,j])
     image.save("Results\\%s\\colorSteps_%d.jpg" %(path, steps))
