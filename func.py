@@ -142,7 +142,6 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
         im = Image.open('Images\\%s' %(path))
 
     pix = im.load()
-    dir(pix)
     edgesX, edgesY = determineEdges(im, pixelsX, pixelsY)
 
     # Colors an area determined by the edges with the same color
