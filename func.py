@@ -251,7 +251,9 @@ def greyImage(path, **kwargs):
     image.save("Results\\%s\\grey.jpg" %(path))
 
 def colorSteps(path, steps):
-
+    """ Creates a image where there are less colors possible. Instead of the 255 ^3 
+        possibilities, there are only (steps) ^ 3 possible colors"""
+        
     image = Image.open('Images\\%s' %(path))
 
     pix = image.load()
@@ -270,16 +272,6 @@ def colorSteps(path, steps):
 
                 color[k] = int(round(RGBValue[k] / step) * step)
 
-            # 255 / 10 -> 25.5
-
-            # 130 / 25.5 -> 5.09
-
-            # 5.09 -> 5
-
-            # 5 * 25.5 = newColor
-
-            # print(color)
-            # print(255 % steps)
             pix[i,j] = tuple(color)
 
     for i in range(width):
