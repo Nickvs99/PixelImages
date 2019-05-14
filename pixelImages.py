@@ -27,6 +27,7 @@ def manipulations(path):
     func.colorScale(path, 2)
     func.scan(path, 280)
     func.greyImage(path)
+    func.colorSteps(path, 1)
 
 print( "Starting...")
 
