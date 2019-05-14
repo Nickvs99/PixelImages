@@ -61,13 +61,21 @@ def animate(path):
 
     power = int(math.floor(maxPower))
 
-
+    if not os.path.exists('Results\\tempImages'):
+        os.makedirs('Results\\tempImages')
 
     # Creates a frame, pixelizes the images for each step, the previous image gets passed on as a 
     # variable for optimizing
     while power >= 0:
         print("\nPower: ", power)
         image = pixelImage(image, 2 ** power, 2 ** power, animation = True, frame = power)
+        
+        if frame < 10:
+            string = "0%i" %(power)
+        else:
+            string = power
+        image.save('Results\\tempImages\\Pixel_%s.jpg' %(string))
+
         power -= 1
 
     # Grabs all images from the temp directory
@@ -160,16 +168,7 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
             colorIn(pix, avg2, edgesX[i], edgesX[i + 1] , edgesY[j], edgesY[j + 1] )
 
 
-    if animation:
-        if not os.path.exists('Results\\tempImages'):
-            os.makedirs('Results\\tempImages')
-        
-        if frame < 10:
-            string = "0%i" %(frame)
-        else:
-            string = frame
-        im.save('Results\\tempImages\\Pixel_%s.jpg' %(string))
-    else:
+    if not animation:
         im.save('Results\\%s\\Pixel_%sx%s.jpg' %(path, pixelsX, pixelsY))
     
     return im
@@ -177,7 +176,7 @@ def pixelImage(path, pixelsX, pixelsY, **kwargs):
 def colorScale(path, colorIndex):
     """Creates a images with just one color"""
 
-    # image = Image.open('Images\\%s' %(path))
+    image = Image.open('Images\\%s' %(path))
 
     pix = image.load()
 
