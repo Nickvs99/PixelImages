@@ -274,3 +274,24 @@ def colorSteps(path, steps):
             pix[i,j] = tuple(color)
 
     image.save("Results\\%s\\colorSteps_%d.jpg" %(path, steps))
+
+def inverted(path):
+    """ Creates an image with the inverted color value"""
+    
+    image = Image.open('Images\\%s' %(path))
+
+    pix = image.load()
+
+    width = image.size[0]
+    heigth = image.size[1]
+
+    for i in range(width):
+        for j in range(heigth):
+            RGBValue = pix[i,j]
+            color = [0] * 3
+            for k in range(3):
+                color[k] = 255 - RGBValue[k]
+
+            pix[i,j] = tuple(color)
+
+    image.save("Results\\%s\\Inverted.jpg" %(path))
