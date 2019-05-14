@@ -28,6 +28,7 @@ def manipulations(path):
     func.scan(path, 280)
     func.greyImage(path)
     func.colorSteps(path, 1)
+    func.inverted(path)
 
 print( "Starting...")
 
